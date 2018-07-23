@@ -19,8 +19,6 @@ Coursera Developing Data Products course.
 
 - Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/ShinyProject/).
 
-- Project Rpres PPT on Rpub please visit [`PPT LINK`](https://rpubs.com/autozRpubs/DigitsManipulateRpres).
-
 Outline
 ========================================================
 
@@ -28,7 +26,7 @@ Outline
 - Comparing with PCA compressed and PCA high dimentions compressed.
 - Show the most similar images of Digits with certain Digit.
 
-Shiny App R Codes and Guide on github please visit [`GITHUB REPO`](https://github.com/autolordz/Course-Project-Shiny-Application-and-Reproducible-Pitch).
+Shiny App R Codes and Guide on  github please visit [`GITHUB REPO`](https://github.com/autolordz/Course-Project-Shiny-Application-and-Reproducible-Pitch).
 
 Shiny files
 ========================================================
@@ -44,29 +42,23 @@ Shiny files
 
 Display Compared Images
 ========================================================
+
 Display screenshots about Compared Images and Plot summaries distances between two certain Digit numbers.
-$$
-d(x,y) = \|{x-y}\| = \sqrt {(x - y)^T (x - y)}
-$$
-<center>![](ComparedDigits.png)</center>
+
+![](ComparedDigits.png)
 
 Display PCA Compress Images
 ========================================================
-Display screenshots about Compared Images and summary distance between two certain Digit numbers. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
-$$
-S = \frac{1}{N} X^T X ; eig(S) = vals,vecs ; B = vecs[,0:n] \\
-P = B (B^T B)^{-1} B^T ; \hat X = P^T X
-$$
-<center>![](PCADigits.png)</center>
+
+Display screenshots about Compared Images or summary distance between two certain Digit numbers. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
+
+![](PCADigits.png)
 
 Display Similar Images
 ========================================================
-Display screenshots about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.
-$$
-cos\omega = \frac {\big \langle x,y \big \rangle}{\|x\| \|y\|} ;
-\|x\| = \sqrt {\big \langle x,y \big \rangle}
-$$
 
-<center>![](SimilarDigits.png)</center>
+Display screenshots about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.
+
+![](SimilarDigits.png)
 
 **END**
