@@ -1,4 +1,3 @@
-
 Digits Manipulating of Shiny Project
 ========================================================
 author: Autoz
@@ -10,15 +9,15 @@ Introduction
 
 > Coursera-Course-Project-Shiny-Application-and-Reproducible-Pitch
 
-This repository contains R codes and R Markdown files for Shiny Project of
-Coursera Developing Data Products course. This application contain three part of malipulating and tuning MNIST Digits image data.
+- This Repo contains R codes and Markdown files for Shiny Project of
+Coursera Developing Data Products course. 
 
-The images were refered to their original IDX format from
-<http://yann.lecun.com/exdb/mnist/>. Dataset is from [mldata](http://mldata.org/). It is a public repository for machine learning data, supported by the PASCAL network.
+- The application contain three part of malipulating and tuning MNIST Digits image data.
 
-Fetch ['mnist-original.mat'](mnist-original.mat) from but mldata seens can not access so redirect to another links.
+- The images were refered to their original IDX format from
+<http://yann.lecun.com/exdb/mnist/>. Dataset is from [`mldata`](http://mldata.org/). It is a public repository for machine learning data, supported by the PASCAL network.Fetch [`MNIST DATA`](mnist-original.mat) from but mldata seens can not access so redirect to another links.
 
-Project Shiny App on ShinyApp.io please visit <https://autolordz.shinyapps.io/ShinyProject/>.
+- Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/ShinyProject/).
 
 Outline
 ========================================================
@@ -27,8 +26,7 @@ Outline
 - Comparing with PCA compressed and PCA high dimentions compressed.
 - Show the most similar images of Digits with certain Digit.
 
-Shiny App R Codes and Guide on  github please visit
-<https://github.com/autolordz/Course-Project-Shiny-Application-and-Reproducible-Pitch>.
+Shiny App R Codes and Guide on  github please visit [`GITHUB REPO`](https://github.com/autolordz/Course-Project-Shiny-Application-and-Reproducible-Pitch).
 
 Shiny files
 ========================================================
@@ -52,7 +50,7 @@ Display screenshots about Compared Images and Plot summaries distances between t
 Display PCA Compress Images
 ========================================================
 
-Display screenshots about Compared Images and summary distance between two certain Digit numbers. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
+Display screenshots about Compared Images or summary distance between two certain Digit numbers. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
 
 ![](PCADigits.png)
 
@@ -62,3 +60,5 @@ Display Similar Images
 Display screenshots about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.
 
 ![](SimilarDigits.png)
+
+**END**
