@@ -7,14 +7,17 @@
 #    http://shiny.rstudio.com/
 #
 library(shiny)
+library(shinyjs)
 library(wordspace)
 library(plyr)
 
 # initData <- function(){
+#     setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 #     if(!exists("MNIST")){
-#         library(R.matlab)
-#         library(mdatools)
-#         MNIST <- readMat("mnist-original.mat")
+#         # library(R.matlab)
+#         # library(mdatools)
+#         # MNIST <- readMat("mnist-original.mat")
+#         MNIST <- readRDS("MNIST.rds")
 #     }
 #     return(MNIST)
 # }
@@ -182,8 +185,9 @@ show_compared_img <- function(Data,dx,dy,x,y){
           line = -3, cex= 1.5,col= "red",outer = T )
 }
 # Example:
-# Data = digit_array(MNIST,N=6)[,0:20]
-# show_compared_img(Data,sample(20,1),sample(20,1))
+# Data = digit_array(MNIST,N=8)[,0:200]
+# A = sample(200,1) ; B = sample(200,1)
+# show_compared_img(Data,Data[,A],Data[,B],A,B)
 #'
 process_pca <- function(X,degree=3,pca=F,pcah=F){
     c("Xbar", "mu", "std") %=% normalize(X)
@@ -201,17 +205,17 @@ show_compress_img <- function(X=qm(0,0,0),Y=X,Z=X,idx=1,Time=0){
           line = -3, cex= 1.5,col= "red",outer = T )
 }
 # Example:
-# A = img_matrix(digit_array(MNIST,0)[,1]) # Single Image
-# PCA = {if(T) process_pca(A,3,T,F) else A}
-# PCAH = {if(T) process_pca(A,4,F,T) else A}
+# A = img_matrix(digit_array(MNIST,8)[,10]) # Single Image
+# PCA = {if(T) process_pca(A,4,T,F) else A}
+# PCAH = {if(T) process_pca(A,8,F,T) else A}
 # show_compress_img(A,PCA,PCAH)
 #'
-show_recommend_img <- function(Data,x=7,n=6,mean=F,S=0){
+show_recommend_img  <- function(Data,x=7,n=6,mean=F,S=0){
     Time <- system.time({
         if(S==0) S <- dist_matrix_idx(x,Data)
         idx <- order(S)[0:n]
-        print(idx)
-        print(S[idx,])
+        # print(idx)
+        # print(S[idx,])
         A = img_matrix(Data[,idx[1]])
         B = matrix(0,28,28)
         idxB = tail(idx,-1)
@@ -233,17 +237,17 @@ show_recommend_img <- function(Data,x=7,n=6,mean=F,S=0){
     return(S)
 } 
 # Example:
-# Data = digit_array(MNIST,N=3)[,0:50]
-# show_recommend_img(Data,x=7,n=5)
+# Data = digit_array(MNIST,N=8)[,0:50]
+# show_recommend_img(Data,x=7,n=6)
 #'
 #'
-init_page1_sample = 10
-init_page1_Aidx = 50
-init_page1_Bidx = 100
-init_page2_PCAc = 2
-init_page2_PCAHc = 8
-init_page3_sample = 10
-init_page3_topn = 5
+init_page1_sample = sample(20,size = 1)
+init_page1_Aidx = sample(300,size = 1)
+init_page1_Bidx = sample(300,size = 1)
+init_page2_PCAc = sample(3:10,size = 1)
+init_page2_PCAHc = sample(3:10,size = 1)
+init_page3_sample = sample(10:30,size = 1)
+init_page3_topn = sample(5:20,size = 1)
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -258,8 +262,8 @@ server <- function(input, output) {
     observeEvent(input$slider1,v$slider1 <- input$slider1)
     observeEvent(input$slider2,v$slider2 <- input$slider2)
     observeEvent(input$slider3,v$slider3 <- input$slider3)
-    observeEvent(input$Aidx,v$idxa <- input$Aidx)
-    observeEvent(input$Bidx,v$idxb <- input$Bidx)
+    # observeEvent(input$Aidx,v$idxa <- input$Aidx)
+    # observeEvent(input$Bidx,v$idxb <- input$Bidx)
     observeEvent(input$go1,v$go1 <- input$go1)
     observeEvent(input$go2,v$go2 <- input$go2)
     observeEvent(input$go3,v$go3 <- input$go3)
@@ -267,27 +271,26 @@ server <- function(input, output) {
     observeEvent(input$tabset,{v$doPlot <-0;v$go1=0;v$go2=0;v$go3=0})
     observeEvent(c(input$x3,input$srange,input$slider3),v$page3data <- 0)
     
+    observeEvent(input$pcac,toggle("pcad"))
+    observeEvent(input$pcahc,toggle("pcahd"))
     
     output$sliders1 <- renderUI({
-        print("1111111111111111111111")
         da = round(dim(digit_array(MNIST,N=v$idx1))[2] * v$slider1 / 100.)
         tagList(
             sliderInput('slider1','Sample Range %',
                         min=2, max=100, post=" %", value = ifelse(v$slider1,v$slider1,init_page1_sample), step=5),
             isolate({sliderInput("Aidx", "Digit A Idx",
-                        min=1, max=da, value=v$idxa, step = 10)}),
+                                 min=1, max=da, value=v$idxa, step = 10)}),
             isolate({sliderInput("Bidx", "Digit B Idx",
-                        min=1, max=da, value=v$idxb, step = 10)})
+                                 min=1, max=da, value=v$idxb, step = 10)})
         )
     })
     output$sliders2 <- renderUI({
-        cat("sliders2!!!")
         da = dim(digit_array(MNIST,N=v$idx2))[2]
         sliderInput("slider2", "Digit Idx",
                     min=1, max=da, value=da/2, step = 10)
     })
     output$sliders3 <- renderUI({
-        cat("sliders3!!!")
         da = round(dim(digit_array(MNIST,N=v$idx3))[2] * input$srange / 100.)
         sliderInput("slider3", "Digit Idx",
                     min=1, max=da, value=ifelse(v$slider3,v$slider3,da/2), step = 10)
@@ -331,7 +334,6 @@ server <- function(input, output) {
                 withProgress(message = 'Calculation in progress',
                              detail = 'This may take a while...', value = 0, {
                                  v$page3data = show_recommend_img(Data,x=input$slider3,n=input$topn,mean=input$mean,v$page3data)
-                                 # cat("ssssssssssss",dim(v$page3data))
                                  incProgress(1/1, detail = paste("Doing part", 1))
                                  Sys.sleep(0.01)
                              })
@@ -344,52 +346,79 @@ server <- function(input, output) {
 ui <- fluidPage(
     
     # Application title
-    titlePanel("Digits Data Manipulating"),
     # headerPanel("PCA Compress Numbers Data2"),
+    useShinyjs(), # for js animate
     
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            h2('Tuning Panel'),
-            tabsetPanel(id = "tabset",
-                        tabPanel("Dist Hist",
-                                 selectInput('x1', 'X', 0:9,selected = 3),
-                                 uiOutput("sliders1"),
-                                 sliderInput('crange', 'Compare Range (Ramdon)',
-                                             min = 2, max = 200, value = sample(2:200,size=1)),
-                                 actionButton("go1", label = "Summit")
-                        ),
-                        tabPanel("PCA Compress",
-                                 selectInput('x2', 'X', 0:9,selected = 6),
-                                 uiOutput("sliders2"),
-                                 sliderInput('pcad', 'PCA Numbers of Componet',
-                                             value = init_page2_PCAc, min = 1, max = 10, step = 1),
-                                 sliderInput('pcahd', 'PCA HD Numbers of Componet',
-                                             value = init_page2_PCAHc, min = 1, max = 10, step = 1), 
-                                 checkboxInput('pcac', 'PCA Normal',value = T),
-                                 checkboxInput('pcahc', 'PCA High Dim',value = T),
-                                 actionButton("go2", label = "Summit")
-                        ),
-                        tabPanel("Simular Digits",
-                                 selectInput('x3', 'X', 0:9,selected = 9),
-                                 sliderInput('srange', 'Sample Range %',
-                                             min = 2, max = 100, post  = " %", value = init_page3_sample),
-                                 uiOutput("sliders3"),
-                                 numericInput('topn', 'Top N',
-                                              min=0, max=20, value=init_page3_topn, step = 1),
-                                 checkboxInput('mean', 'Show Average'),
-                                 actionButton("go3", label = "Summit")
-                        ))
-            # textInput('itx', '', value=''),
-        ),
-        
-        # Show a plot of the generated distribution
-        mainPanel(
-            h2('Plot Panel'),
-            plotOutput("plot_img")
-            # textOutput(" ")
-            # plotOutput(" ")
-        )
+    navbarPage("***",
+               tabPanel("Home",
+                        titlePanel("Digits Data Manipulating"),
+                        # Sidebar with a slider input for number of bins 
+                        sidebarLayout(
+                            sidebarPanel(
+                                h2('Tuning Panel'),
+                                tabsetPanel(id = "tabset",
+                                            tabPanel("Dist Hist",
+                                                     selectInput('x1', 'X', 0:9,selected = 3),
+                                                     uiOutput("sliders1"),
+                                                     sliderInput('crange', 'Compare Range (Ramdon)',
+                                                                 min = 2, max = 200, value = sample(2:200,size=1)),
+                                                     actionButton("go1", label = "Summit")
+                                            ),
+                                            tabPanel("PCA Compress",
+                                                     selectInput('x2', 'X', 0:9,selected = 6),
+                                                     uiOutput("sliders2"),
+                                                     sliderInput('pcad', 'PCA Numbers of Componet',
+                                                                 value = init_page2_PCAc, min = 1, max = 10, step = 1),
+                                                     sliderInput('pcahd', 'PCA HD Numbers of Componet',
+                                                                 value = init_page2_PCAHc, min = 1, max = 10, step = 1), 
+                                                     checkboxInput('pcac', 'PCA Normal',value = F),
+                                                     checkboxInput('pcahc', 'PCA High Dim',value = F),
+                                                     actionButton("go2", label = "Summit")
+                                            ),
+                                            tabPanel("Simular Digits",
+                                                     selectInput('x3', 'X', 0:9,selected = 9),
+                                                     sliderInput('srange', 'Sample Range %',
+                                                                 min = 2, max = 100, post  = " %", value = init_page3_sample),
+                                                     uiOutput("sliders3"),
+                                                     numericInput('topn', 'Top N',
+                                                                  min=0, max=20, value=init_page3_topn, step = 1),
+                                                     checkboxInput('mean', 'Show Average'),
+                                                     actionButton("go3", label = "Summit")
+                                            ))
+                                # textInput('itx', '', value=''),
+                            ),
+                            # Show a plot of the generated distribution
+                            mainPanel(
+                                h2('Plot Output:'),
+                                plotOutput("plot_img")
+                                # textOutput(" ")
+                                # plotOutput(" ")
+                            )
+                        )
+               ),
+               tabPanel("About",
+                        p(
+                            "author: Autoz",br(),
+                            "date: 2018-7-22",
+                            h2('Main Description'),
+                            "This App contain three part of malipulating and tuning MNIST Digits image data.",br(),
+                            "The MNIST database of handwritten digits, has a set of 70,000 examples, with digis from 0 to 9. ",br(),
+                            "It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image.",
+                            h2('How to Use'),
+                            "There is 3 sections of app for digits manipulating. Each section can tune serveral parameters with Slider and Combox widgets.",br(),
+                            "1. Statistics of the distance of two Digits of certain number.",br(),
+                            "2. Comparing with PCA compressed and PCA high dimentions compressed.",br(),
+                            "3. Show the most similar images of Digits with certain Digit.",
+                            h2('Display the Results'),
+                            "1. Show a plot about Compared Images. Plot summaries distances between two certain Digit numbers.",br(),
+                            "2. Show a plot about with a certain Digit Number. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.",br(),
+                            "3. Show a plot about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.",
+                            h2('Example with numbers'),
+                            "1. Visualization of how different(distance) from 2 images with same number.",br(),
+                            "2. Visualization of 3 images with different compress degree of PCA.",br(),
+                            "3. Visualization of 1 image origin digit and several nearest neighbor images sort by the degree of similarity."
+                        )
+               )
     )
 )
 

@@ -12,17 +12,20 @@ Introduction
 - This Repo contains R codes and Markdown files for Shiny Project of
 Coursera Developing Data Products course. 
 
-- The application contain three part of malipulating and tuning MNIST Digits image data.
+- The Application contain three part of malipulating and tuning MNIST Digits image data.
 
-- The images were refered to their original IDX format from
-<http://yann.lecun.com/exdb/mnist/>. Dataset is from [`mldata`](http://mldata.org/). It is a public repository for machine learning data, supported by the PASCAL network.Fetch [`MNIST DATA`](mnist-original.mat) from but mldata seens can not access so redirect to another links.
+- The MNIST database of handwritten digits, has a set of 70,000 examples, with digis from 0 to 9. It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image.
 
-- Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/ShinyProject/).
+- More infomations about the digits can refered to <http://yann.lecun.com/exdb/mnist/>. Dataset can be retrieved from [`mldata`](http://mldata.org/). It is a public repository for machine learning data, supported by the PASCAL network. Fetch [`MNIST DATA`](mnist-original.mat) from but mldata seens can not access so redirect to another links.
+
+- Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/DigitsManipulate/).
 
 Outline
 ========================================================
 
-- Statistics of the distance of two Digits of certain n umber.
+There is three sections of app for digits manipulating. Each section can tune serveral parameters with Slider and Combox widgets.
+
+- Statistics of the distance of two Digits of certain number.
 - Comparing with PCA compressed and PCA high dimentions compressed.
 - Show the most similar images of Digits with certain Digit.
 
@@ -30,7 +33,7 @@ Shiny App R Codes and Guide on  github please visit [`GITHUB REPO`](https://gith
 
 Display Compared Images
 ========================================================
-Display screenshots about Compared Images and Plot summaries distances between two certain Digit numbers.
+Show a plot about Compared Images and Plot summaries distances between two certain Digit numbers.
 $$
 d(x,y) = \|{x-y}\| = \sqrt {(x - y)^T (x - y)}
 $$
@@ -38,7 +41,7 @@ $$
 
 Display PCA Compress Images
 ========================================================
-Display screenshots about Compared Images and summary distance between two certain Digit numbers. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
+Show a plot about with a certain Digit number. You can choose PCA (if n > p)and PCA high dimension (if p >> n) method to compress.
 $$
 S = \frac{1}{N} X^T X ; eig(S) = vals,vecs ; B = vecs[,0:n] \\
 P = B (B^T B)^{-1} B^T ; \hat X = P^T X
@@ -47,7 +50,7 @@ $$
 
 Display Similar Images
 ========================================================
-Display screenshots about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.
+Show a plot about Similar Images with certain Digit numbers. It can select different certain Digit numbers and sample range for illustrating how similar with current Digit.
 $$
 cos\omega = \frac {\big \langle x,y \big \rangle}{\|x\| \|y\|} ;
 \|x\| = \sqrt {\big \langle x,y \big \rangle}

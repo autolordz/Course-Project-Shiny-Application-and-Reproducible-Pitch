@@ -17,7 +17,7 @@ Coursera Developing Data Products course.
 - The images were refered to their original IDX format from
 <http://yann.lecun.com/exdb/mnist/>. Dataset is from [`mldata`](http://mldata.org/). It is a public repository for machine learning data, supported by the PASCAL network.Fetch [`MNIST DATA`](mnist-original.mat) from but mldata seens can not access so redirect to another links.
 
-- Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/ShinyProject/).
+- Project Shiny App on ShinyApp.io please visit [`PROJECT LINK`](https://autolordz.shinyapps.io/DigitsManipulate/).
 
 Outline
 ========================================================
